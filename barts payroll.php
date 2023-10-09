@@ -135,7 +135,7 @@
 
              <span>Department:</span>
              <input type="text" class="formcontrol input_box1" id="department" name="department" value="<?php echo $department;?>" disabled>
-             <button type="submit" name="cancel" class="btn btn-danger" style="padding:5px; width:100px;">CANCEL</button>                        
+             <button type="submit" name="search" class="btn btn-danger" style="padding:5px; width:100px;">SEARCH</button>                        
          </div>
      </div>
      <div class="payrol_form_group1" style="width:50%; margin:right; margintop:36px;">
