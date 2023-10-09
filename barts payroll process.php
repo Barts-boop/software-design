@@ -68,6 +68,64 @@ $net_income = "";
 $total_deduct = "";
 
 session_start();
+
+function SSS($gross) {
+    $meet = true;
+    $sss = 0.00;
+    $counter = 0;
+    $initial = 0.00;
+    $initial2 = 4249.99;
+    while($meet){
+        if($gross>=29750.00){
+            $sss=1350.00;
+            $meet=false;
+        }
+        else if($gross>=$initial && $gross<=$initial2){
+            $sss=180+($counter*22.5);
+            $meet=false;
+        }
+        else{
+            $counter++;
+            $initial=$initial2+0.01;
+            $initial2+=500;
+        }
+    }
+    return $sss;
+}
+
+function PHILHEALTH($gross){
+    $philH=0.00;
+    if($gross<=10000.00 && $gross>=0){
+        $philH=450.00;
+    }
+    else if($gross>=10000.01 && $gross<=89999.99){
+        $philH = $gross*0.045;
+    }
+    else {
+        $philH=4050.00;
+    }
+    return $philH;
+}
+function TAX($gross){
+    $tax=0.00;
+    if($gross<=0 && $gross<=10417){
+        $tax = $gross * 0;
+    }
+    else if($gross>10417 && $gross<= 16666){
+        $tax = $gross * 0.20;
+    }
+    else if($gross>16667 && $gross<=33332){
+        $tax = $gross * 0.25;
+    }
+    else if($gross>33333 && $gross<=83332){
+        $tax = $gross * 0.30;
+    }
+    else if($gross>83333 && $gross<=333332){
+        $tax = $gross * 0.32;
+    }
+    return $tax;
+}
+
 //getting input from textbox and place it inside the variable by calling the name of the inputs
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // to press Calculate Gross Income button
@@ -93,167 +151,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         //sss contribution
-        $sss_contri = 1178.70;
-        for($i = 1000; $i<= 15250; $i +=500) {
-            if($gross_income >= $i && $gross_income <= $i + 499.99) {
-                $sss_contri = ($i / 250) * 36.8 + 737.70;
-                break;
-            }
-        }
+        $sss_contri=SSS($gross_income);
 
         //philhealth contribution based from the given PhilHealth Table
-        $step = 1000;
-        $philH_contri = 437.50;
-        for($i = 0; $i <= 35000; $i += $step) {
-            if($gross_income <= $i + 999.99) {
-                $philH_contri = ($i / 1000) * 12.50 + 100;
-                break;
-            }
-        }
+        $philH_contri=PHILHEALTH($gross_income);
 
         //tax computation
         //example ( net income - from the table data) * .25 + tax from table base from net income range
 
-        switch (strtolower($qualified_dependents)) {
+        $tax_contri=TAX($gross_income);
 
-                //for zero exemption
-            case "z":
-                if ($gross_income <= 833 && $gross_income >= 0) {
-                    $tax_contri = ((($gross_income - 0) * .05) + 0);
-                } else if ($gross_income >= 834 && $gross_income <= 2500) {
-                    $tax_contri = ((($gross_income - 833) * .10) + 41.67);
-                } else if ($gross_income >= 2501 && $gross_income <= 5833) {
-                    $tax_contri = ((($gross_income - 2500) * .15) + 208.33);
-                } else if ($gross_income >= 5834 && $gross_income <= 11667) {
-                    $tax_contri = ((($gross_income - 5833) * .20) + 708.33);
-                } else if ($gross_income >= 11668 && $gross_income <= 20833) {
-                    $tax_contri = ((($gross_income - 11667) * .25) + 1875);
-                } else if ($gross_income >= 20834 && $gross_income <= 41667) {
-                    $tax_contri = ((($gross_income - 20834) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 41667) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with one qualified dependents
-            case "s":
-            case "me":
-                if ($gross_income <= 50 && $gross_income >= 0) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 4167 && $gross_income <= 5000) {
-                    $tax_contri = ((($gross_income - 0) * .05) + 0);
-                } else if ($gross_income >= 5001 && $gross_income <= 6667) {
-                    $tax_contri = ((($gross_income - 5000) * .10) + 41.67);
-                } else if ($gross_income >= 6668 && $gross_income <= 10000) {
-                    $tax_contri = ((($gross_income - 6667) * .15) + 208.33);
-                } else if ($gross_income >= 10001 && $gross_income <= 15833) {
-                    $tax_contri = ((($gross_income - 10000) * .20) + 708.33);
-                } else if ($gross_income >= 15834 && $gross_income <= 25000) {
-                    $tax_contri = ((($gross_income - 15833) * .25) + 1875);
-                } else if ($gross_income >= 25001 && $gross_income <= 45833) {
-                    $tax_contri = ((($gross_income - 25000) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 45833) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me1":
-            case "s1":
-                if ($gross_income <= 75 && $gross_income >= 6250) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 6251 && $gross_income <= 7083) {
-                    $tax_contri = ((($gross_income - 6250) * .05) + 0);
-                } else if ($gross_income >= 7084 && $gross_income <= 8750) {
-                    $tax_contri = ((($gross_income - 7083) * .10) + 41.67);
-                } else if ($gross_income >= 8751 && $gross_income <= 12083) {
-                    $tax_contri = ((($gross_income - 8750) * .15) + 208.33);
-                } else if ($gross_income >= 12084 && $gross_income <= 17917) {
-                    $tax_contri = ((($gross_income - 12083) * .20) + 708.33);
-                } else if ($gross_income >= 17918 && $gross_income <= 27083) {
-                    $tax_contri = ((($gross_income - 17917) * .25) + 1875);
-                } else if ($gross_income >= 27084 && $gross_income <= 47917) {
-                    $tax_contri = ((($gross_income - 27083) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 47917) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me2":
-            case "s2":
-                if ($gross_income <= 100 && $gross_income >= 8333) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 8334 && $gross_income <= 9167) {
-                    $tax_contri = ((($gross_income - 8333) * .05) + 0);
-                } else if ($gross_income >= 9168 && $gross_income <= 10833) {
-                    $tax_contri = ((($gross_income - 9167) * .10) + 41.67);
-                } else if ($gross_income >= 10834 && $gross_income <= 14167) {
-                    $tax_contri = ((($gross_income - 10833) * .15) + 208.33);
-                } else if ($gross_income >= 14168 && $gross_income <= 20000) {
-                    $tax_contri = ((($gross_income - 14167) * .20) + 708.33);
-                } else if ($gross_income >= 20001 && $gross_income <= 29167) {
-                    $tax_contri = ((($gross_income - 20000) * .25) + 1875);
-                } else if ($gross_income >= 29168 && $gross_income <= 50000) {
-                    $tax_contri = ((($gross_income - 29167) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 50000) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me3":
-            case "s3":
-                if ($gross_income <= 125 && $gross_income >= 10417) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 10418 && $gross_income <= 11250) {
-                    $tax_contri = ((($gross_income - 10417) * .05) + 0);
-                } else if ($gross_income >= 11251 && $gross_income <= 12917) {
-                    $tax_contri = ((($gross_income - 11250) * .10) + 41.67);
-                } else if ($gross_income >= 12918 && $gross_income <= 16250) {
-                    $tax_contri = ((($gross_income - 12917) * .15) + 208.33);
-                } else if ($gross_income >= 16251 && $gross_income <= 22083) {
-                    $tax_contri = ((($gross_income - 16250) * .20) + 708.33);
-                } else if ($gross_income >= 22084 && $gross_income <= 31250) {
-                    $tax_contri = ((($gross_income - 22084) * .25) + 1875);
-                } else if ($gross_income >= 31251 && $gross_income <= 52083) {
-                    $tax_contri = ((($gross_income - 31250) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 52083) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me4":
-            case "s4":
-                if ($gross_income <= 150 && $gross_income >= 12500) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 12501 && $gross_income <= 13333) {
-                    $tax_contri = ((($gross_income - 12500) * .05) + 0);
-                } else if ($gross_income >= 13334 && $gross_income <= 15000) {
-                    $tax_contri = ((($gross_income - 13333) * .10) + 41.67);
-                } else if ($gross_income >= 15001 && $gross_income <= 18333) {
-                    $tax_contri = ((($gross_income - 15001) * .15) + 208.33);
-                } else if ($gross_income >= 18334 && $gross_income <= 24167) {
-                    $tax_contri = ((($gross_income - 18333) * .20) + 708.33);
-                } else if ($gross_income >= 24168 && $gross_income <= 33333) {
-                    $tax_contri = ((($gross_income - 24167) * .25) + 1875);
-                } else if ($gross_income >= 33334 && $gross_income <= 54167) {
-                    $tax_contri = ((($gross_income - 33333) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 54167) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-            default:
-                $tax_contri = 0;
-        }
+        $total_deduct = $sss_contri + $philH_contri + $pagibig_contri + $tax_contri + $sss_loan + $pagibig_loan + $fs_deposit + $fs_loan + $salary_loan + $other_loans;
+        $net_income = $gross_income - $total_deduct;
 
         // to press Calculate Net Income button
     } else if (isset($_POST["calculate_net_income"])) {
@@ -278,177 +187,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         //sss contribution
-        $step = 22.5;
-        $sss_contri = 180;
-        $start = 4250;
-        $end = 4749.99;
-        for($i = $start; $i < 29749.99; $i += 500) {
-            if($gross_income >= $start && $gross_income <= $end) {
-                $sss_contri += $step;
-                break;
-            }
-            $step += 22.5;
-            $start += 500;
-            $end += 500;
-        }
+        $sss_contri=SSS($gross_income);
 
         //philhealth contribution based from the given PhilHealth Table
-        if($gross_income<=10000.00 && $gross_income>=0){
-            $philH_contri=450.00;
-        } 
-        else if($gross_income>=10000.01 && $gross_income<=89999.99){
-            $philH_contri=$gross_income*0.045;
-        } 
-        else {
-            $philH_contri=4050.00;
-        }
+        $philH_contri=PHILHEALTH($gross_income);
 
         //tax computation
         //example ( net income - from the table data) * .25 + tax from table base from
-        switch (strtolower($qualified_dependents)) {
+        $tax_contri=TAX($gross_income);
 
-                //for zero exemption
-            case "z":
-                if ($gross_income <= 833 && $gross_income >= 0) {
-                    $tax_contri = ((($gross_income - 0) * .05) + 0);
-                } else if ($gross_income >= 834 && $gross_income <= 2500) {
-                    $tax_contri = ((($gross_income - 833) * .10) + 41.67);
-                } else if ($gross_income >= 2501 && $gross_income <= 5833) {
-                    $tax_contri = ((($gross_income - 2500) * .15) + 208.33);
-                } else if ($gross_income >= 5834 && $gross_income <= 11667) {
-                    $tax_contri = ((($gross_income - 5833) * .20) + 708.33);
-                } else if ($gross_income >= 11668 && $gross_income <= 20833) {
-                    $tax_contri = ((($gross_income - 11667) * .25) + 1875);
-                } else if ($gross_income >= 20834 && $gross_income <= 41667) {
-                    $tax_contri = ((($gross_income - 20834) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 41667) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with one qualified dependents
-            case "s":
-            case "me":
-                if($gross_income<=0 && $gross_income<=10417){
-                    $tax_contri = $gross_income * 0;
-                }
-                else if($gross_income>10417 && $gross_income<=16666){
-                    $tax_contri = $gross_income * 0.20;
-                }
-                else if($gross_income>=16667 && $gross_income<=33332){
-                    $tax_contri = $gross_income * 0.25;
-                }
-                else if($gross_income>=33333 && $gross_income<=83332){
-                    $tax_contri = $gross_income * 0.30;
-                }
-                else if($gross_income>=83333 && $gross_income<=333332){
-                    $tax_contri = $gross_income * 0.32;
-                }
-                else if($gross_income>=333333){
-                    $tax_contri = $gross_income * 0.32;
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me1":
-            case "s1":
-                if ($gross_income <= 75 && $gross_income >= 6250) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 6251 && $gross_income <= 7083) {
-                    $tax_contri = ((($gross_income - 6250) * .05) + 0);
-                } else if ($gross_income >= 7084 && $gross_income <= 8750) {
-                    $tax_contri = ((($gross_income - 7083) * .10) + 41.67);
-                } else if ($gross_income >= 8751 && $gross_income <= 12083) {
-                    $tax_contri = ((($gross_income - 8750) * .15) + 208.33);
-                } else if ($gross_income >= 12084 && $gross_income <= 17917) {
-                    $tax_contri = ((($gross_income - 12083) * .20) + 708.33);
-                } else if ($gross_income >= 17918 && $gross_income <= 27083) {
-                    $tax_contri = ((($gross_income - 17917) * .25) + 1875);
-                } else if ($gross_income >= 27084 && $gross_income <= 47917) {
-                    $tax_contri = ((($gross_income - 27083) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 47917) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me2":
-            case "s2":
-                if ($gross_income <= 100 && $gross_income >= 8333) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 8334 && $gross_income <= 9167) {
-                    $tax_contri = ((($gross_income - 8333) * .05) + 0);
-                } else if ($gross_income >= 9168 && $gross_income <= 10833) {
-                    $tax_contri = ((($gross_income - 9167) * .10) + 41.67);
-                } else if ($gross_income >= 10834 && $gross_income <= 14167) {
-                    $tax_contri = ((($gross_income - 10833) * .15) + 208.33);
-                } else if ($gross_income >= 14168 && $gross_income <= 20000) {
-                    $tax_contri = ((($gross_income - 14167) * .20) + 708.33);
-                } else if ($gross_income >= 20001 && $gross_income <= 29167) {
-                    $tax_contri = ((($gross_income - 20000) * .25) + 1875);
-                } else if ($gross_income >= 29168 && $gross_income <= 50000) {
-                    $tax_contri = ((($gross_income - 29167) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 50000) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me3":
-            case "s3":
-                if ($gross_income <= 125 && $gross_income >= 10417) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 10418 && $gross_income <= 11250) {
-                    $tax_contri = ((($gross_income - 10417) * .05) + 0);
-                } else if ($gross_income >= 11251 && $gross_income <= 12917) {
-                    $tax_contri = ((($gross_income - 11250) * .10) + 41.67);
-                } else if ($gross_income >= 12918 && $gross_income <= 16250) {
-                    $tax_contri = ((($gross_income - 12917) * .15) + 208.33);
-                } else if ($gross_income >= 16251 && $gross_income <= 22083) {
-                    $tax_contri = ((($gross_income - 16250) * .20) + 708.33);
-                } else if ($gross_income >= 22084 && $gross_income <= 31250) {
-                    $tax_contri = ((($gross_income - 22084) * .25) + 1875);
-                } else if ($gross_income >= 31251 && $gross_income <= 52083) {
-                    $tax_contri = ((($gross_income - 31250) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 52083) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-                //for single or married with qualified dependents
-            case "me4":
-            case "s4":
-                if ($gross_income <= 150 && $gross_income >= 12500) {
-                    $tax_contri = (($gross_income - 0) + 0);
-                } else if ($gross_income >= 12501 && $gross_income <= 13333) {
-                    $tax_contri = ((($gross_income - 12500) * .05) + 0);
-                } else if ($gross_income >= 13334 && $gross_income <= 15000) {
-                    $tax_contri = ((($gross_income - 13333) * .10) + 41.67);
-                } else if ($gross_income >= 15001 && $gross_income <= 18333) {
-                    $tax_contri = ((($gross_income - 15001) * .15) + 208.33);
-                } else if ($gross_income >= 18334 && $gross_income <= 24167) {
-                    $tax_contri = ((($gross_income - 18333) * .20) + 708.33);
-                } else if ($gross_income >= 24168 && $gross_income <= 33333) {
-                    $tax_contri = ((($gross_income - 24167) * .25) + 1875);
-                } else if ($gross_income >= 33334 && $gross_income <= 54167) {
-                    $tax_contri = ((($gross_income - 33333) * .30) + 4166.67);
-                } else {
-                    $tax_contri = ((($gross_income - 54167) * .32) + 10416.67);
-                }
-                //$tax_contri=100;
-                break;
-
-            default:
-                $tax_contri = 0;
-        }
-        $total_deduct = $sss_contri + $philH_contri + $pagibig_contri + $tax_contri +
-            $sss_loan
-            + $pagibig_loan + $fs_deposit + $fs_loan + $salary_loan + $other_loans;
+        $total_deduct = $sss_contri + $philH_contri + $pagibig_contri + $tax_contri + $sss_loan + $pagibig_loan + $fs_deposit + $fs_loan + $salary_loan + $other_loans;
         $net_income = $gross_income - $total_deduct;
 
         $_SESSION['basic_income_cutoff'] = $basic_income_cutoff;
