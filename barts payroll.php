@@ -18,6 +18,8 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
  <!-- Latest compiled JavaScript --> 
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+ <script src="js/seripayroll_save,js?v.1"></script>
 
  <style>
  .payrol_form_group1 div span {
@@ -297,7 +299,7 @@
                      <button type="submit" name="calculate_gross_income" class="btn btn-primary" style="padding:5px; margin-bottom:5px;">CALCULATE GROSS INCOME</button>
                      <button type="submit" name="calculate_net_income" class="btn btn-primary" style="padding:5px; margin-bottom:5px;">CALCULATE NET INCOME</button>
                      <button type="submit" name="new" class="btn btn-warning" style="padding:5px; margin-bottom:5px; width:100px;">NEW</button>
-                     <button type="submit" name="print_preview" class="btn btn-info" style="padding:5px;">PRINT PREVIEW PAYSLIP</button>
+                     <button type="submit" name="save" class="btn btn-info" style="padding:5px;">SAVE</button>
                      <button type="submit" name="print_payslip" class="btn btn-info" style="padding:5px; width:117px;">PRINT PAYSLIP</button>
                      <button type="submit" name="cancel" class="btn btn-danger" style="padding:5px; width:100px;">CANCEL</button>
                      <button type="submit" name="close" class="btn btn-dark" style="padding:5px; width:100px;">CLOSE</button>

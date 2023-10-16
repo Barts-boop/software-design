@@ -214,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // to press NEW button
     } else if (isset($_POST["new"])) {
         empty_inputbox();
-    } else if (isset($_POST["print_preview"])) {
+    } else if (isset($_POST["save"])) {
         // to press Print Payslip button
     } else if (isset($_POST["print_payslip"])) {
         // to press Cancel button
