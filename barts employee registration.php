@@ -18,7 +18,8 @@
     <!-- Latest compiled JavaScript -->
     <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/emp_info_save.js?v.3"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="js/barts_info_save.js"></script>
     <link rel="stylesheet" href="css/barts_employee_registration.css?v.3">
 </head>
 <body>
@@ -721,7 +722,7 @@ font-family:Algerian; color:black"><b>Barts`s Employee Personal Information</b><
 </div>
 </div>
 </div>
-<button type="submit" class="btn btn-primary" id = "savebtn" name="savebtn" style="width:130px;">Save</button>
+<button type="submit" class="btn btn-primary" id = "save" name="savebtn" style="width:130px;">Save</button>
 <button type="reset" class="btn btn-outline-secondary" id =
 "cancelbtn" name="cancelbtn" style="width:130px;">Cancel</button>
 </form>
