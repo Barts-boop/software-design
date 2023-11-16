@@ -48,14 +48,13 @@
         <ul>
             <li><a href="barts admin page.php">Home</a></li>
             <li><a href="barts employee registration.php">Employee Registration</a></li>
-            <li><a href="#">Employee Report</li>
+            <li><a href="employee_listview.php">Employee Report</li>
             <li><a href="barts payroll.php">Payroll</a></li>
-            <li><a href="#">Payroll Report</a></li>
+            <li><a href="payroll_listview.php">Payroll Report</a></li>
             <li><a href="barts glasses.php">POS</a></li>
-            <li><a href="#">POS Sales Report</a></li>
+            <li><a href="pos_listview.php">POS Sales Report</a></li>
             <li><a href="barts user info.php">User Account</a></li>
             <li><a href="barts login form.php">Logout</a></li>
-
             <!-- Add more menu items as needed -->
         </ul>
     </aside>

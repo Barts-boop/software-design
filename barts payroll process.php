@@ -34,7 +34,7 @@ function empty_inputbox()
 
 
 //decleration of variables with fix data value for employee info
-$employee_no = "2021201619";
+$employee_no = "";
 $department = "DOE";
 $firstname = "Carl Jeremiah";
 $mname = "Cantoria";
